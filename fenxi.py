@@ -17,9 +17,8 @@ with open('下载.json', 'r') as f:
     data = json.loads(f.read())
     # print((data['challenges'][0]['qqid']))
     for i in data['members']:
-        for i1 in range(1, 11):
+        for i1 in range(1, 11):#前五个为对对应boss造成的伤害,后五个为对对应boss的出刀数
             i[i1] = 0
-    # print((data['members'][0]))
 
     for i in data['challenges']:
         if i['cycle'] != 1:
@@ -30,8 +29,6 @@ with open('下载.json', 'r') as f:
                         sum_damage[i['boss_num']-1] += i['damage']
     for i in range(5):
         sum_damage[i] = sum_damage[i]/times[i]
-    # print(times)
-    # print(sum_damage)
     for i in data['challenges']:
         if i['cycle'] != 1:
             if i['health_ramain'] != 0:
@@ -41,7 +38,6 @@ with open('下载.json', 'r') as f:
                             i['damage']-sum_damage[i['boss_num']-1])**2
     for i in range(5):
         variance[i] = math.sqrt(variance[i]/(times[i]-1))
-    # print(variance)
     hang = 0
     for i in data['challenges']:
         if i['cycle'] != 1:
@@ -49,8 +45,6 @@ with open('下载.json', 'r') as f:
                 if i['is_continue'] == False:
                     for i1 in data['members']:
                         if i1['qqid'] == i['qqid']:
-                            # print(variance[i['boss_num']-1])
-                            # print(f_piancha(908834, 1172583.7674418604,117971894042.51))
                             fx = f_piancha(
                                 i['damage'], sum_damage[i['boss_num']-1], variance[i['boss_num']-1])
                             sheet_dao.write(hang, 0, i1['nickname'])
@@ -75,5 +69,3 @@ with open('下载.json', 'r') as f:
             sheet_ren.write(hang, 6, total_damage/total_dao)
         hang+=1
 workbook.save('会战分析.xls')
-# print(len(data['challenges']))
-# print(data.keys())
